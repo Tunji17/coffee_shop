@@ -23,6 +23,8 @@ export class DrinkMenuPage implements OnInit {
   }
 
   async openForm(activedrink: Drink = null) {
+    console.log('===>');
+    console.log(activedrink);
     if (!this.auth.can('get:drinks-detail')) {
       return;
     }
