@@ -59,23 +59,23 @@ export class DrinksService {
   //                           3: {
   //                             id: 3,
   //                             title: 'cap',
-  //                             recipe: [
-  //                                   {
-  //                                     name: 'foam',
-  //                                     color: 'white',
-  //                                     parts: 1
-  //                                   },
-  //                                   {
-  //                                     name: 'milk',
-  //                                     color: 'grey',
-  //                                     parts: 2
-  //                                   },
-  //                                   {
-  //                                     name: 'coffee',
-  //                                     color: 'brown',
-  //                                     parts: 1
-  //                                   },
-  //                                 ]
+                              // recipe: [
+                              //       {
+                              //         name: 'foam',
+                              //         color: 'white',
+                              //         parts: 1
+                              //       },
+                              //       {
+                              //         name: 'milk',
+                              //         color: 'grey',
+                              //         parts: 2
+                              //       },
+                              //       {
+                              //         name: 'coffee',
+                              //         color: 'brown',
+                              //         parts: 1
+                              //       },
+                              //     ]
   //                           }
   //   };
 
@@ -94,13 +94,13 @@ export class DrinksService {
     if (this.auth.can('get:drinks-detail')) {
       this.http.get(this.url + '/drinks-detail', this.getHeaders())
       .subscribe((res: any) => {
-        this.drinksToItems(res.drinks);
+        this.drinksToItems(res);
         console.log(res);
       });
     } else {
       this.http.get(this.url + '/drinks', this.getHeaders())
       .subscribe((res: any) => {
-        this.drinksToItems(res.drinks);
+        this.drinksToItems(res);
         console.log(res);
       });
     }
@@ -112,14 +112,14 @@ export class DrinksService {
       this.http.patch(this.url + '/drinks/' + drink.id, drink, this.getHeaders())
       .subscribe( (res: any) => {
         if (res.success) {
-          this.drinksToItems(res.drinks);
+          this.drinksToItems(res);
         }
       });
     } else { // insert
       this.http.post(this.url + '/drinks', drink, this.getHeaders())
       .subscribe( (res: any) => {
         if (res.success) {
-          this.drinksToItems(res.drinks);
+          this.drinksToItems(res);
         }
       });
     }
@@ -135,8 +135,15 @@ export class DrinksService {
   }
 
   drinksToItems( drinks: Array<Drink>) {
+    console.log(drinks)
+    // for(let i =0; i < drinks.length; i++){
+    //   console.log(drinks[i])
+    //   console.log('drink')
+    // }
     for (const drink of drinks) {
       this.items[drink.id] = drink;
+      console.log(drink)
+      console.log('drink')
     }
   }
 }

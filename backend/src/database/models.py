@@ -2,6 +2,7 @@ import os
 from sqlalchemy import Column, String, Integer
 from flask_sqlalchemy import SQLAlchemy
 import json
+import ast
 
 database_filename = "database.db"
 project_dir = os.path.dirname(os.path.abspath(__file__))
@@ -19,6 +20,7 @@ def setup_db(app):
     db.app = app
     db.init_app(app)
 
+
 '''
 db_drop_and_create_all()
     drops the database tables and starts fresh
@@ -29,26 +31,26 @@ def db_drop_and_create_all():
     db.drop_all()
     db.create_all()
 
+
 '''
 Drink
 a persistent drink entity, extends the base SQLAlchemy Model
 '''
 class Drink(db.Model):
     # Autoincrementing, unique primary key
-    id = Column(Integer().with_variant(Integer, "sqlite"), primary_key=True)
+    id = db.Column(db.Integer().with_variant(Integer, "sqlite"), primary_key=True)
     # String Title
-    title = Column(String(80), unique=True)
+    title = db.Column(db.String(80), unique=True)
     # the ingredients blob - this stores a lazy json blob
     # the required datatype is [{'color': string, 'name':string, 'parts':number}]
-    recipe =  Column(String(180), nullable=False)
+    recipe = db.Column(db.String(500), nullable=False)
 
     '''
     short()
         short form representation of the Drink model
     '''
     def short(self):
-        print(json.loads(self.recipe))
-        short_recipe = [{'color': r['color'], 'parts': r['parts']} for r in json.loads(self.recipe)]
+        short_recipe = [{'color': r['color'], 'parts': r['parts']} for r in ast.literal_eval(self.recipe)]
         return {
             'id': self.id,
             'title': self.title,
@@ -63,7 +65,8 @@ class Drink(db.Model):
         return {
             'id': self.id,
             'title': self.title,
-            'recipe': json.loads(self.recipe)
+            # 'recipe': json.loads(self.recipe)
+            'recipe': self.recipe
         }
 
     '''
