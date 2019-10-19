@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-
 import { AuthService } from './auth.service';
 import { environment } from 'src/environments/environment';
 
@@ -22,62 +21,61 @@ export class DrinksService {
   url = environment.apiServerUrl;
 
   public items: {[key: number]: Drink} = {};
-  // = {
-  //                             1: {
-  //                             id: 1,
-  //                             title: 'matcha shake',
-  //                             recipe: [
-  //                                   {
-  //                                     name: 'milk',
-  //                                     color: 'grey',
-  //                                     parts: 1
-  //                                   },
-  //                                   {
-  //                                     name: 'matcha',
-  //                                     color: 'green',
-  //                                     parts: 3
-  //                                   },
-  //                                 ]
-  //                           },
-  //                           2: {
-  //                             id: 2,
-  //                             title: 'flatwhite',
-  //                             recipe: [
+    //                           1: {
+    //                           id: 1,
+    //                           title: 'matcha shake',
+    //                           recipe: [
+    //                                 {
+    //                                   name: 'milk',
+    //                                   color: 'grey',
+    //                                   parts: 1
+    //                                 },
+    //                                 {
+    //                                   name: 'matcha',
+    //                                   color: 'green',
+    //                                   parts: 3
+    //                                 },
+    //                               ]
+    //                         },
+    //                         2: {
+    //                           id: 2,
+    //                           title: 'flatwhite',
+    //                           recipe: [
 
-  //                                   {
-  //                                     name: 'milk',
-  //                                     color: 'grey',
-  //                                     parts: 3
-  //                                   },
-  //                                   {
-  //                                     name: 'coffee',
-  //                                     color: 'brown',
-  //                                     parts: 1
-  //                                   },
-  //                                 ]
-  //                           },
-  //                           3: {
-  //                             id: 3,
-  //                             title: 'cap',
-                              // recipe: [
-                              //       {
-                              //         name: 'foam',
-                              //         color: 'white',
-                              //         parts: 1
-                              //       },
-                              //       {
-                              //         name: 'milk',
-                              //         color: 'grey',
-                              //         parts: 2
-                              //       },
-                              //       {
-                              //         name: 'coffee',
-                              //         color: 'brown',
-                              //         parts: 1
-                              //       },
-                              //     ]
-  //                           }
-  //   };
+    //                                 {
+    //                                   name: 'milk',
+    //                                   color: 'grey',
+    //                                   parts: 3
+    //                                 },
+    //                                 {
+    //                                   name: 'coffee',
+    //                                   color: 'brown',
+    //                                   parts: 1
+    //                                 },
+    //                               ]
+    //                         },
+    //                         3: {
+    //                           id: 3,
+    //                           title: 'cap',
+    //                           recipe: [
+    //                                 {
+    //                                   name: 'foam',
+    //                                   color: 'white',
+    //                                   parts: 1
+    //                                 },
+    //                                 {
+    //                                   name: 'milk',
+    //                                   color: 'grey',
+    //                                   parts: 2
+    //                                 },
+    //                                 {
+    //                                   name: 'coffee',
+    //                                   color: 'brown',
+    //                                   parts: 1
+    //                                 },
+    //                               ]
+    //                         }
+    // };
 
 
   constructor(private auth: AuthService, private http: HttpClient) { }
@@ -92,16 +90,14 @@ export class DrinksService {
 
   getDrinks() {
     if (this.auth.can('get:drinks-detail')) {
-      this.http.get(this.url + '/drinks-detail', this.getHeaders())
+     return this.http.get(this.url + '/drinks-detail', this.getHeaders())
       .subscribe((res: any) => {
-        this.drinksToItems(res);
-        console.log(res);
+       return this.drinksToItems(res);
       });
     } else {
-      this.http.get(this.url + '/drinks', this.getHeaders())
+     return this.http.get(this.url + '/drinks', this.getHeaders())
       .subscribe((res: any) => {
-        this.drinksToItems(res);
-        console.log(res);
+       return this.drinksToItems(res);
       });
     }
 
@@ -135,15 +131,9 @@ export class DrinksService {
   }
 
   drinksToItems( drinks: Array<Drink>) {
-    console.log(drinks)
-    // for(let i =0; i < drinks.length; i++){
-    //   console.log(drinks[i])
-    //   console.log('drink')
-    // }
-    for (const drink of drinks) {
+    for (const drink of drinks['success']) {
       this.items[drink.id] = drink;
-      console.log(drink)
-      console.log('drink')
-    }
+    }  
+    return this.items
   }
 }
