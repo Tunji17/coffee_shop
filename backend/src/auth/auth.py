@@ -21,6 +21,11 @@ class AuthError(Exception):
         self.error = error
         self.status_code = status_code
 
+'''
+Helper function that verifies authorization 
+header and returns token without the bearer string
+'''
+
 
 def get_token_auth_header():
     auth_token = request.headers.get('Authorization', None)
@@ -44,6 +49,12 @@ def get_token_auth_header():
     token = segmented_token[1]
     return token
 
+'''
+Helper function that checks if there's a permissions
+list in the decoded token payload and verifies that 
+the user can perform said action
+'''
+
 
 def check_permissions(permission, payload):
     if 'permissions' not in payload:
@@ -58,6 +69,11 @@ def check_permissions(permission, payload):
             'description': 'Permission not found.'
         }, 403)
     return True
+
+
+'''
+Helper function that verifies that the token is actually a valid token and decodes it 
+'''
 
 
 def verify_decode_jwt(token):
@@ -111,6 +127,11 @@ def verify_decode_jwt(token):
                 'code': 'invalid_header',
                 'description': 'Unable to find the appropriate key.'
             }, 400)
+
+
+'''
+the authorization decorator that uses the previous helper functions
+'''
 
 
 def requires_auth(permission=''):
